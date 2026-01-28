@@ -4,7 +4,8 @@
   "description": "Nova AI Store Builder - Shopify Embedded App",
   "scripts": {
     "dev": "shopify app dev",
-    "build": "shopify app build",
+    "build": "cd web && npm install",
+    "start": "cd web && node server.js",
     "deploy": "shopify app deploy",
     "generate": "shopify app generate"
   },
