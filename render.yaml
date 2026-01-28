@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nova-api
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: cd web && npm install
+    startCommand: cd web && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ANTHROPIC_API_KEY
+        sync: false
