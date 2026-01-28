@@ -1,0 +1,173 @@
+{{ 'nova-testimonials.css' | asset_url | stylesheet_tag }}
+
+<section class="nova-testimonials">
+  <div class="nova-testimonials__container">
+    <div class="nova-testimonials__header">
+      {% if section.settings.badge_text != blank %}
+        <span class="nova-testimonials__badge">{{ section.settings.badge_text }}</span>
+      {% endif %}
+      <h2 class="nova-testimonials__title">{{ section.settings.title | default: 'What Our Customers Say' }}</h2>
+      <p class="nova-testimonials__subtitle">{{ section.settings.subtitle | default: 'Join thousands of satisfied customers' }}</p>
+    </div>
+
+    <div class="nova-testimonials__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'testimonial' %}
+          <div class="nova-testimonial" {{ block.shopify_attributes }}>
+            <div class="nova-testimonial__rating">
+              {% for i in (1..5) %}
+                {% if i <= block.settings.rating %}
+                  <span class="nova-testimonial__star nova-testimonial__star--filled">★</span>
+                {% else %}
+                  <span class="nova-testimonial__star">☆</span>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <p class="nova-testimonial__quote">"{{ block.settings.quote }}"</p>
+            <div class="nova-testimonial__author">
+              {% if block.settings.avatar != blank %}
+                {{ block.settings.avatar | image_url: width: 48 | image_tag: class: 'nova-testimonial__avatar' }}
+              {% else %}
+                <div class="nova-testimonial__avatar nova-testimonial__avatar--placeholder">
+                  {{ block.settings.author | slice: 0 }}
+                </div>
+              {% endif %}
+              <div class="nova-testimonial__author-info">
+                <span class="nova-testimonial__author-name">{{ block.settings.author }}</span>
+                {% if block.settings.verified %}
+                  <span class="nova-testimonial__verified">✓ Verified Buyer</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.show_cta %}
+      <div class="nova-testimonials__cta">
+        <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="nova-testimonials__button">
+          {{ section.settings.cta_text | default: 'Join Them Today' }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nova Testimonials",
+  "tag": "section",
+  "class": "nova-testimonials-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "⭐ Over 50,000 5-Star Reviews"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Loved by Thousands"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "See why customers keep coming back"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show Call to Action",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Join Them Today"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "This product exceeded all my expectations. The quality is amazing and shipping was incredibly fast!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Author Avatar"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified Buyer",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nova Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "I was skeptical at first, but this product completely changed my mind. The quality is outstanding!",
+            "author": "Michael R.",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Fast shipping, great packaging, and the product itself is even better than the pictures. Highly recommend!",
+            "author": "Jennifer L.",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Best purchase I've made this year. Customer service was also incredibly helpful when I had questions.",
+            "author": "David K.",
+            "verified": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,205 @@
+/* Nova Hero Section - Premium Design */
+
+.nova-hero {
+  background-color: var(--hero-bg, #ffffff);
+  color: var(--hero-text, #1a1a1a);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.nova-hero__container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+@media (max-width: 968px) {
+  .nova-hero__container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 20px 60px;
+  }
+}
+
+/* Announcement Bar */
+.nova-hero__announcement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #1a1a1a 0%, #333 100%);
+  color: #fff;
+  text-align: center;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Content */
+.nova-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nova-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  width: fit-content;
+}
+
+.nova-hero__headline {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.nova-hero__subheadline {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+  max-width: 500px;
+}
+
+/* Features */
+.nova-hero__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.nova-hero__feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.nova-hero__feature-icon {
+  font-size: 18px;
+}
+
+/* CTA Buttons */
+.nova-hero__cta {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.nova-hero__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nova-hero__button--primary {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.nova-hero__button--primary:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.nova-hero__button--secondary {
+  background: transparent;
+  color: #1a1a1a;
+  border: 2px solid #e0e0e0;
+}
+
+.nova-hero__button--secondary:hover {
+  border-color: #1a1a1a;
+}
+
+/* Trust Badges */
+.nova-hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.nova-hero__trust-item {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Media/Image */
+.nova-hero__media {
+  position: relative;
+}
+
+.nova-hero__image {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Statistics Bar */
+.nova-hero__stats {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  padding: 40px 20px;
+  background: #fafafa;
+  border-top: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+  .nova-hero__stats {
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+}
+
+.nova-hero__stat {
+  text-align: center;
+}
+
+.nova-hero__stat-number {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.nova-hero__stat-label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

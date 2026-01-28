@@ -1,0 +1,29 @@
+# Nova AI Store Builder - Shopify App Configuration
+
+name = "Nova AI Store Builder"
+client_id = "b59cd73f80484072dca0bab1083079b5"
+application_url = "https://localhost:3000"
+embedded = true
+
+[access_scopes]
+scopes = "read_products,write_products,read_themes,write_themes,read_content,write_content,read_files,write_files"
+
+[auth]
+redirect_urls = [
+  "https://localhost:3000/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+[app_proxy]
+url = "https://localhost:3000/api/proxy"
+subpath = "nova"
+prefix = "apps"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "nova-ai-store-creator.myshopify.com"

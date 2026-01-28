@@ -1,0 +1,245 @@
+/* Nova Product Showcase Section */
+
+.nova-product-showcase {
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.nova-product-showcase__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+@media (max-width: 968px) {
+  .nova-product-showcase__container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* Gallery */
+.nova-product-showcase__gallery {
+  position: sticky;
+  top: 20px;
+}
+
+.nova-product-showcase__main-image {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f8f8f8;
+}
+
+.nova-product-showcase__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.nova-product-showcase__badge-sale {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: #ef4444;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.nova-product-showcase__thumbnails {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.nova-product-showcase__thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.nova-product-showcase__thumbnail:hover,
+.nova-product-showcase__thumbnail.active {
+  border-color: #1a1a1a;
+}
+
+.nova-product-showcase__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Details */
+.nova-product-showcase__details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nova-product-showcase__urgency {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.nova-product-showcase__social-proof {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.nova-product-showcase__title {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.nova-product-showcase__price {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nova-product-showcase__price-current {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.nova-product-showcase__price-compare {
+  font-size: 20px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.nova-product-showcase__price-save {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nova-product-showcase__description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #666;
+}
+
+/* Variants */
+.nova-product-showcase__variants {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nova-product-showcase__option-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.nova-product-showcase__option-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nova-product-showcase__option-value {
+  padding: 10px 20px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nova-product-showcase__option-value:hover,
+.nova-product-showcase__option-value.active {
+  border-color: #1a1a1a;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+/* Actions */
+.nova-product-showcase__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.nova-product-showcase__button {
+  flex: 1;
+  padding: 18px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nova-product-showcase__button--primary {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+}
+
+.nova-product-showcase__button--primary:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Trust Badges */
+.nova-product-showcase__trust {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.nova-product-showcase__trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #666;
+}
+
+.nova-product-showcase__trust-icon {
+  font-size: 24px;
+}
+
+/* Placeholder */
+.nova-product-showcase__placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px;
+  background: #f8f8f8;
+  border-radius: 16px;
+  color: #666;
+}

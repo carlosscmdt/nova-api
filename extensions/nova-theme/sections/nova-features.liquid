@@ -1,0 +1,142 @@
+{{ 'nova-features.css' | asset_url | stylesheet_tag }}
+
+<section class="nova-features" style="--features-bg: {{ section.settings.background_color }};">
+  <div class="nova-features__container">
+    <div class="nova-features__header">
+      {% if section.settings.badge_text != blank %}
+        <span class="nova-features__badge">{{ section.settings.badge_text }}</span>
+      {% endif %}
+      <h2 class="nova-features__title">{{ section.settings.title | default: 'Why Choose Us' }}</h2>
+      <p class="nova-features__subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <div class="nova-features__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'feature' %}
+          <div class="nova-feature" {{ block.shopify_attributes }}>
+            <div class="nova-feature__icon">
+              {{ block.settings.icon | default: '✨' }}
+            </div>
+            <h3 class="nova-feature__title">{{ block.settings.title }}</h3>
+            <p class="nova-feature__description">{{ block.settings.description }}</p>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nova Features",
+  "tag": "section",
+  "class": "nova-features-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Why Choose Us"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "The Nova Difference"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "We're committed to quality, service, and your satisfaction"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (Emoji)",
+          "default": "🎯"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Premium Quality"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Every product is carefully selected and quality-checked to ensure you get only the best."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nova Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🚀",
+            "title": "Fast Shipping",
+            "description": "Get your order delivered quickly with our express shipping options. Most orders arrive within 3-5 business days."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "💎",
+            "title": "Premium Quality",
+            "description": "We source only the highest quality materials and work with trusted manufacturers to ensure excellence."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🔒",
+            "title": "Secure Checkout",
+            "description": "Shop with confidence knowing your payment information is protected with industry-leading encryption."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "💬",
+            "title": "24/7 Support",
+            "description": "Our friendly support team is always here to help. Reach out anytime via email or chat."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "↩️",
+            "title": "Easy Returns",
+            "description": "Not satisfied? No problem. Our 30-day return policy makes it easy to get your money back."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🌟",
+            "title": "5-Star Reviews",
+            "description": "Join over 50,000 happy customers who've rated us 5 stars for quality and service."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

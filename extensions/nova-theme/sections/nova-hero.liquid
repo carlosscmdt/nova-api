@@ -1,0 +1,256 @@
+{{ 'nova-hero.css' | asset_url | stylesheet_tag }}
+
+<section class="nova-hero" style="--hero-bg: {{ section.settings.background_color }}; --hero-text: {{ section.settings.text_color }};">
+  <div class="nova-hero__container">
+    {% if section.settings.announcement_text != blank %}
+      <div class="nova-hero__announcement">
+        {{ section.settings.announcement_text }}
+      </div>
+    {% endif %}
+
+    <div class="nova-hero__content">
+      {% if section.settings.badge_text != blank %}
+        <span class="nova-hero__badge">{{ section.settings.badge_text }}</span>
+      {% endif %}
+
+      <h1 class="nova-hero__headline">
+        {{ section.settings.headline | default: 'Premium Quality, Unbeatable Value' }}
+      </h1>
+
+      <p class="nova-hero__subheadline">
+        {{ section.settings.subheadline | default: 'Discover the difference that quality makes.' }}
+      </p>
+
+      {% if section.settings.show_features %}
+        <div class="nova-hero__features">
+          {% for block in section.blocks %}
+            {% if block.type == 'feature' %}
+              <div class="nova-hero__feature">
+                {% if block.settings.icon != blank %}
+                  <span class="nova-hero__feature-icon">{{ block.settings.icon }}</span>
+                {% endif %}
+                <span class="nova-hero__feature-text">{{ block.settings.text }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="nova-hero__cta">
+        <a href="{{ section.settings.button_link | default: '/collections/all' }}" class="nova-hero__button nova-hero__button--primary">
+          {{ section.settings.button_text | default: 'Shop Now' }}
+        </a>
+        {% if section.settings.secondary_button_text != blank %}
+          <a href="{{ section.settings.secondary_button_link }}" class="nova-hero__button nova-hero__button--secondary">
+            {{ section.settings.secondary_button_text }}
+          </a>
+        {% endif %}
+      </div>
+
+      {% if section.settings.show_trust_badges %}
+        <div class="nova-hero__trust">
+          <span class="nova-hero__trust-item">✓ Free Shipping</span>
+          <span class="nova-hero__trust-item">✓ 30-Day Returns</span>
+          <span class="nova-hero__trust-item">✓ Secure Checkout</span>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.image != blank %}
+      <div class="nova-hero__media">
+        {{ section.settings.image | image_url: width: 800 | image_tag: class: 'nova-hero__image', loading: 'eager' }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_stats %}
+    <div class="nova-hero__stats">
+      <div class="nova-hero__stat">
+        <span class="nova-hero__stat-number">{{ section.settings.stat_1_number | default: '50K+' }}</span>
+        <span class="nova-hero__stat-label">{{ section.settings.stat_1_label | default: 'Happy Customers' }}</span>
+      </div>
+      <div class="nova-hero__stat">
+        <span class="nova-hero__stat-number">{{ section.settings.stat_2_number | default: '4.9' }}</span>
+        <span class="nova-hero__stat-label">{{ section.settings.stat_2_label | default: 'Star Rating' }}</span>
+      </div>
+      <div class="nova-hero__stat">
+        <span class="nova-hero__stat-number">{{ section.settings.stat_3_number | default: '30' }}</span>
+        <span class="nova-hero__stat-label">{{ section.settings.stat_3_label | default: 'Day Guarantee' }}</span>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Nova Hero",
+  "tag": "section",
+  "class": "nova-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "🔥 LIMITED TIME: 50% OFF + Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "⭐ 4.9 Rating from 10,000+ Reviews"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Transform Your Everyday Experience"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "Join over 50,000 happy customers who made the switch to premium quality."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show Features",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show Trust Badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Statistics",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Stat 1 Number",
+      "default": "50K+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "Happy Customers"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Stat 2 Number",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "Star Rating"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Stat 3 Number",
+      "default": "30"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "Day Guarantee"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1a1a1a"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (Emoji)",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Premium Quality"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nova Hero",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🎯",
+            "text": "Premium Quality"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "⚡",
+            "text": "Fast Shipping"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "💎",
+            "text": "30-Day Guarantee"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

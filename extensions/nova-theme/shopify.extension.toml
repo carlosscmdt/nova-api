@@ -1,0 +1,10 @@
+api_version = "2024-01"
+
+[[extensions]]
+name = "Nova Premium Theme"
+handle = "nova-theme"
+uid = "ad1a912a-dec7-ffa6-1a18-4377e7aa44ac6038bfdf"
+type = "theme"
+
+[extensions.settings]
+# Theme settings will be loaded from settings_schema.json

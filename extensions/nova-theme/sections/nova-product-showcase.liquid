@@ -1,0 +1,142 @@
+{{ 'nova-product-showcase.css' | asset_url | stylesheet_tag }}
+
+<section class="nova-product-showcase">
+  <div class="nova-product-showcase__container">
+    {% if section.settings.product != blank %}
+      {% assign product = section.settings.product %}
+
+      <div class="nova-product-showcase__gallery">
+        <div class="nova-product-showcase__main-image">
+          {% if product.featured_image %}
+            {{ product.featured_image | image_url: width: 800 | image_tag: class: 'nova-product-showcase__image', loading: 'lazy' }}
+          {% endif %}
+
+          {% if product.compare_at_price > product.price %}
+            <div class="nova-product-showcase__badge-sale">
+              {% assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+              -{{ discount }}% OFF
+            </div>
+          {% endif %}
+        </div>
+
+        {% if product.images.size > 1 %}
+          <div class="nova-product-showcase__thumbnails">
+            {% for image in product.images limit: 5 %}
+              <div class="nova-product-showcase__thumbnail">
+                {{ image | image_url: width: 120 | image_tag: loading: 'lazy' }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="nova-product-showcase__details">
+        {% if section.settings.urgency_message != blank %}
+          <div class="nova-product-showcase__urgency">
+            🔥 {{ section.settings.urgency_message }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.social_proof != blank %}
+          <div class="nova-product-showcase__social-proof">
+            ⭐ {{ section.settings.social_proof }}
+          </div>
+        {% endif %}
+
+        <h2 class="nova-product-showcase__title">{{ product.title }}</h2>
+
+        <div class="nova-product-showcase__price">
+          <span class="nova-product-showcase__price-current">{{ product.price | money }}</span>
+          {% if product.compare_at_price > product.price %}
+            <span class="nova-product-showcase__price-compare">{{ product.compare_at_price | money }}</span>
+            <span class="nova-product-showcase__price-save">
+              Save {{ product.compare_at_price | minus: product.price | money }}
+            </span>
+          {% endif %}
+        </div>
+
+        <div class="nova-product-showcase__description">
+          {{ product.description | truncate: 300 }}
+        </div>
+
+        {% if product.variants.size > 1 %}
+          <div class="nova-product-showcase__variants">
+            {% for option in product.options_with_values %}
+              <div class="nova-product-showcase__option">
+                <label class="nova-product-showcase__option-label">{{ option.name }}</label>
+                <div class="nova-product-showcase__option-values">
+                  {% for value in option.values %}
+                    <button class="nova-product-showcase__option-value">{{ value }}</button>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="nova-product-showcase__actions">
+          <a href="{{ product.url }}" class="nova-product-showcase__button nova-product-showcase__button--primary">
+            {{ section.settings.button_text | default: 'Shop Now' }}
+          </a>
+        </div>
+
+        <div class="nova-product-showcase__trust">
+          <div class="nova-product-showcase__trust-item">
+            <span class="nova-product-showcase__trust-icon">🚚</span>
+            <span>Free Shipping</span>
+          </div>
+          <div class="nova-product-showcase__trust-item">
+            <span class="nova-product-showcase__trust-icon">↩️</span>
+            <span>30-Day Returns</span>
+          </div>
+          <div class="nova-product-showcase__trust-item">
+            <span class="nova-product-showcase__trust-icon">🔒</span>
+            <span>Secure Checkout</span>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="nova-product-showcase__placeholder">
+        <p>Select a product to display</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nova Product Showcase",
+  "tag": "section",
+  "class": "nova-product-showcase-section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "urgency_message",
+      "label": "Urgency Message",
+      "default": "Only 12 left in stock - Order now!"
+    },
+    {
+      "type": "text",
+      "id": "social_proof",
+      "label": "Social Proof",
+      "default": "4.9/5 rating from 2,847 reviews"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Add to Cart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nova Product Showcase"
+    }
+  ]
+}
+{% endschema %}

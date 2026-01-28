@@ -1,0 +1,101 @@
+/* Nova Features Section */
+
+.nova-features {
+  padding: 80px 20px;
+  background: var(--features-bg, #ffffff);
+}
+
+.nova-features__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nova-features__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.nova-features__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.nova-features__title {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+}
+
+.nova-features__subtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Features Grid */
+.nova-features__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+@media (max-width: 968px) {
+  .nova-features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .nova-features__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Individual Feature */
+.nova-feature {
+  text-align: center;
+  padding: 40px 24px;
+  background: #fafafa;
+  border-radius: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nova-feature:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+.nova-feature__icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.nova-feature__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
+
+.nova-feature__description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}

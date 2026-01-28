@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova AI Store Builder - Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #1a1a1a;
+      --accent: #5a31f4;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --danger: #dc2626;
+      --gray-50: #fafafa;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-300: #d4d4d4;
+      --gray-500: #737373;
+      --gray-600: #525252;
+      --gray-700: #404040;
+      --gray-900: #171717;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--gray-100);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .app-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .app-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .app-logo span {
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Main Container */
+    .main-container {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: white;
+      border-right: 1px solid var(--gray-200);
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      color: var(--gray-900);
+    }
+
+    /* Input Section */
+    .input-section {
+      margin-bottom: 2rem;
+    }
+
+    .input-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(90, 49, 244, 0.1);
+    }
+
+    .input-hint {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-top: 0.5rem;
+    }
+
+    /* Options */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .option-btn {
+      padding: 0.75rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: var(--gray-300);
+    }
+
+    .option-btn.active {
+      border-color: var(--accent);
+      background: rgba(90, 49, 244, 0.05);
+      color: var(--accent);
+    }
+
+    /* Generate Button */
+    .generate-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .generate-btn:hover:not(:disabled) {
+      background: #4a25d4;
+      transform: translateY(-1px);
+    }
+
+    .generate-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .generate-btn .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Status */
+    .status-section {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .status-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .status-icon.pending {
+      background: var(--gray-200);
+      color: var(--gray-500);
+    }
+
+    .status-icon.active {
+      background: var(--accent);
+      color: white;
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    .status-icon.done {
+      background: var(--success);
+      color: white;
+    }
+
+    .status-icon.error {
+      background: var(--danger);
+      color: white;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Preview Area */
+    .preview-area {
+      padding: 2rem;
+      background: var(--gray-100);
+      overflow-y: auto;
+    }
+
+    .preview-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      background: white;
+      padding: 0.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .preview-tab {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-600);
+      transition: all 0.2s;
+    }
+
+    .preview-tab:hover {
+      background: var(--gray-100);
+    }
+
+    .preview-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Preview Frame */
+    .preview-frame {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .preview-browser-bar {
+      background: var(--gray-100);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .browser-dot.red { background: #ff5f56; }
+    .browser-dot.yellow { background: #ffbd2e; }
+    .browser-dot.green { background: #27c93f; }
+
+    .browser-url {
+      flex: 1;
+      background: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      border: 1px solid var(--gray-200);
+    }
+
+    .preview-content {
+      min-height: 600px;
+    }
+
+    .preview-content iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
+    }
+
+    /* Generated Store Preview */
+    .store-preview {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    /* Announcement Bar */
+    .store-announcement {
+      background: var(--primary);
+      color: white;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    /* Store Header */
+    .store-header {
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .store-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .store-nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .store-nav a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    /* Hero Section */
+    .store-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      padding: 4rem 2rem;
+      background: var(--gray-50);
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(90, 49, 244, 0.1);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--gray-900);
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+
+    .hero-image {
+      background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+      aspect-ratio: 1;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+      font-size: 3rem;
+      overflow: hidden;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Trust Badges */
+    .trust-section {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 2rem;
+      background: white;
+      border-top: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--gray-700);
+    }
+
+    .trust-icon {
+      width: 40px;
+      height: 40px;
+      background: #e8f5e9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--success);
+    }
+
+    /* Product Section */
+    .product-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-gallery {
+      background: var(--gray-100);
+      aspect-ratio: 1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: var(--gray-300);
+      overflow: hidden;
+    }
+
+    .product-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .product-info h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-subtitle {
+      color: var(--gray-600);
+      margin-bottom: 1.5rem;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stars {
+      color: var(--warning);
+    }
+
+    .rating-text {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .product-price {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-current {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .price-compare {
+      font-size: 1.25rem;
+      color: var(--gray-400);
+      text-decoration: line-through;
+    }
+
+    .price-save {
+      background: #dcfce7;
+      color: var(--success);
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .urgency-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: #fef2f2;
+      border-radius: 8px;
+      color: var(--danger);
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-proof {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: var(--gray-100);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .avatar-stack {
+      display: flex;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      border: 2px solid white;
+      margin-left: -8px;
+    }
+
+    .avatar:first-child {
+      margin-left: 0;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 0.75rem;
+    }
+
+    .buy-now-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* Features */
+    .features-section {
+      padding: 4rem 2rem;
+      background: var(--gray-50);
+    }
+
+    .features-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--gray-100);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--gray-600);
+      font-size: 0.9rem;
+    }
+
+    /* Testimonials */
+    .testimonials-section {
+      padding: 4rem 2rem;
+    }
+
+    .testimonials-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .testimonial-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .testimonial-stars {
+      color: var(--warning);
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-quote {
+      color: var(--gray-700);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .author-name {
+      font-weight: 600;
+    }
+
+    .author-title {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+    }
+
+    .verified-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      color: var(--success);
+    }
+
+    /* Code Preview */
+    .code-preview {
+      background: var(--gray-900);
+      color: #e5e5e5;
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .code-preview pre {
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 400px;
+      color: var(--gray-500);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 1.25rem;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .loading-card {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--gray-200);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    .loading-text {
+      font-size: 1rem;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-subtext {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .main-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--gray-200);
+      }
+
+      .store-hero,
+      .product-section {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem 1rem;
+      }
+
+      .features-grid,
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .trust-section {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-logo">
+      <span>Nova</span> AI Store Builder
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Create Your Store</h2>
+
+      <div class="input-section">
+        <label class="input-label">Product URL</label>
+        <input type="url" id="productUrl" class="input-field" placeholder="https://aliexpress.com/item/..." value="">
+        <p class="input-hint">Paste a product URL from AliExpress, Amazon, or any e-commerce site. Leave empty for demo.</p>
+      </div>
+
+      <div class="input-section">
+        <label class="input-label">Language</label>
+        <div class="options-grid">
+          <button class="option-btn active" data-lang="en">English</button>
+          <button class="option-btn" data-lang="de">Deutsch</button>
+        </div>
+      </div>
+
+      <div class="input-section">
+        <label class="input-label">Style</label>
+        <div class="options-grid">
+          <button class="option-btn active" data-tone="premium">Premium</button>
+          <button class="option-btn" data-tone="minimal">Minimal</button>
+          <button class="option-btn" data-tone="bold">Bold</button>
+          <button class="option-btn" data-tone="playful">Playful</button>
+        </div>
+      </div>
+
+      <button id="generateBtn" class="generate-btn">
+        <span>Generate Store</span>
+      </button>
+
+      <div class="status-section" id="statusSection" style="display: none;">
+        <div class="status-item" id="status-scrape">
+          <div class="status-icon pending">1</div>
+          <span>Scraping product data...</span>
+        </div>
+        <div class="status-item" id="status-generate">
+          <div class="status-icon pending">2</div>
+          <span>Generating AI content...</span>
+        </div>
+        <div class="status-item" id="status-theme">
+          <div class="status-icon pending">3</div>
+          <span>Building Shopify theme...</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Preview Area -->
+    <main class="preview-area">
+      <div class="preview-tabs">
+        <button class="preview-tab active" data-tab="store">Store Preview</button>
+        <button class="preview-tab" data-tab="liquid">Liquid Code</button>
+        <button class="preview-tab" data-tab="json">JSON Data</button>
+      </div>
+
+      <div class="preview-frame">
+        <div class="preview-browser-bar">
+          <div class="browser-dots">
+            <div class="browser-dot red"></div>
+            <div class="browser-dot yellow"></div>
+            <div class="browser-dot green"></div>
+          </div>
+          <div class="browser-url" id="previewUrl">your-store.myshopify.com</div>
+        </div>
+
+        <div class="preview-content" id="previewContent">
+          <div class="empty-state">
+            <div class="empty-state-icon">🏪</div>
+            <h3>No Store Generated Yet</h3>
+            <p>Enter a product URL and click "Generate Store" to create your premium Shopify store</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Generating your store...</div>
+      <div class="loading-subtext" id="loadingSubtext">This may take up to 30 seconds</div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let currentTab = 'store';
+    let generatedData = null;
+    let selectedLang = 'en';
+    let selectedTone = 'premium';
+
+    // Elements
+    const productUrlInput = document.getElementById('productUrl');
+    const generateBtn = document.getElementById('generateBtn');
+    const statusSection = document.getElementById('statusSection');
+    const previewContent = document.getElementById('previewContent');
+    const previewUrl = document.getElementById('previewUrl');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingText = document.getElementById('loadingText');
+    const loadingSubtext = document.getElementById('loadingSubtext');
+
+    // Tab switching
+    document.querySelectorAll('.preview-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTab = tab.dataset.tab;
+        renderPreview();
+      });
+    });
+
+    // Option buttons
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedLang = btn.dataset.lang;
+      });
+    });
+
+    document.querySelectorAll('[data-tone]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-tone]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedTone = btn.dataset.tone;
+      });
+    });
+
+    // Generate button
+    generateBtn.addEventListener('click', async () => {
+      const url = productUrlInput.value.trim();
+
+      // Show loading
+      loadingOverlay.style.display = 'flex';
+      statusSection.style.display = 'block';
+      generateBtn.disabled = true;
+      generateBtn.innerHTML = '<div class="spinner"></div><span>Generating...</span>';
+
+      // Reset status
+      ['scrape', 'generate', 'theme'].forEach(s => {
+        const el = document.querySelector(`#status-${s} .status-icon`);
+        el.className = 'status-icon pending';
+        el.textContent = ['1', '2', '3'][['scrape', 'generate', 'theme'].indexOf(s)];
+      });
+
+      try {
+        // Step 1: Scrape
+        updateStatus('scrape', 'active');
+        loadingText.textContent = 'Scraping product data...';
+
+        const scrapeRes = await fetch('/api/scrape', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: url || 'demo' })
+        });
+        const scrapeData = await scrapeRes.json();
+
+        if (!scrapeData.success) throw new Error(scrapeData.error);
+        updateStatus('scrape', 'done');
+
+        // Step 2: Generate AI content
+        updateStatus('generate', 'active');
+        loadingText.textContent = 'Generating AI content...';
+        loadingSubtext.textContent = 'Claude is creating your store copy...';
+
+        const generateRes = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            productData: scrapeData.data,
+            options: {
+              language: selectedLang,
+              tone: selectedTone
+            }
+          })
+        });
+        const generateData = await generateRes.json();
+
+        if (!generateData.success) throw new Error(generateData.error);
+        updateStatus('generate', 'done');
+
+        // Step 3: Theme ready
+        updateStatus('theme', 'active');
+        loadingText.textContent = 'Building Shopify theme...';
+        await new Promise(r => setTimeout(r, 500));
+        updateStatus('theme', 'done');
+
+        // Store data and render
+        generatedData = {
+          product: scrapeData.data,
+          content: generateData.data
+        };
+
+        previewUrl.textContent = `${generateData.data.brandName?.toLowerCase().replace(/\s+/g, '') || 'your-store'}.myshopify.com`;
+        renderPreview();
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error generating store: ' + error.message);
+      } finally {
+        loadingOverlay.style.display = 'none';
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<span>Generate Store</span>';
+      }
+    });
+
+    function updateStatus(step, status) {
+      const el = document.querySelector(`#status-${step} .status-icon`);
+      el.className = `status-icon ${status}`;
+      if (status === 'done') el.textContent = '✓';
+    }
+
+    function renderPreview() {
+      if (!generatedData) {
+        previewContent.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🏪</div>
+            <h3>No Store Generated Yet</h3>
+            <p>Enter a product URL and click "Generate Store" to create your premium Shopify store</p>
+          </div>
+        `;
+        return;
+      }
+
+      const { product, content } = generatedData;
+
+      if (currentTab === 'store') {
+        renderStorePreview(product, content);
+      } else if (currentTab === 'liquid') {
+        renderLiquidPreview(content);
+      } else if (currentTab === 'json') {
+        previewContent.innerHTML = `<div class="code-preview"><pre>${JSON.stringify(content, null, 2)}</pre></div>`;
+      }
+    }
+
+    function renderStorePreview(product, content) {
+      const hp = content.homepage || {};
+      const prod = content.product || {};
+      const brand = content.brand || {};
+      const testimonials = hp.testimonials || [];
+      const features = hp.features || [];
+      const stats = hp.stats || [];
+      const trustBadges = content.trustBadges || [];
+
+      const productImage = product.images?.[0] || '';
+
+      previewContent.innerHTML = `
+        <div class="store-preview">
+          <!-- Announcement -->
+          <div class="store-announcement">
+            ${content.announcementBar || '🔥 FREE SHIPPING on orders over $75 - Limited Time Only!'}
+          </div>
+
+          <!-- Header -->
+          <header class="store-header">
+            <div class="store-logo">${content.brandName || 'Nova Store'}</div>
+            <nav class="store-nav">
+              <a href="#">Shop</a>
+              <a href="#">About</a>
+              <a href="#">Contact</a>
+            </nav>
+          </header>
+
+          <!-- Hero -->
+          <section class="store-hero">
+            <div class="hero-content">
+              <div class="hero-badge">⭐ ${stats[0] ? `${stats[0].number} ${stats[0].label}` : 'Rated #1 by customers'}</div>
+              <h1 class="hero-title">${hp.heroHeadline || 'Transform Your Life Today'}</h1>
+              <p class="hero-subtitle">${hp.heroSubheadline || 'Join thousands of satisfied customers who have discovered the difference.'}</p>
+              <a href="#product" class="hero-cta">
+                ${hp.ctaButton || 'Shop Now'} →
+              </a>
+              <div class="hero-stats">
+                ${stats.map(s => `
+                  <div class="stat">
+                    <div class="stat-number">${s.number}</div>
+                    <div class="stat-label">${s.label}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            <div class="hero-image">
+              ${productImage ? `<img src="${productImage}" alt="${product.title}">` : '📦'}
+            </div>
+          </section>
+
+          <!-- Trust Badges -->
+          <section class="trust-section">
+            ${trustBadges.map((badge, i) => `
+              <div class="trust-badge">
+                <div class="trust-icon">${['🚚', '🛡️', '🔒', '💬'][i] || '✓'}</div>
+                <span>${badge}</span>
+              </div>
+            `).join('')}
+          </section>
+
+          <!-- Product Section -->
+          <section class="product-section" id="product">
+            <div class="product-gallery">
+              ${productImage ? `<img src="${productImage}" alt="${product.title}">` : '📦'}
+            </div>
+            <div class="product-info">
+              <h1>${prod.title || product.title}</h1>
+              <p class="product-subtitle">${prod.subtitle || 'Premium quality, exceptional results'}</p>
+
+              <div class="product-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-text">4.9 (${prod.socialProof?.match(/\\d+,?\\d*/)?.[0] || '2,847'} reviews)</span>
+              </div>
+
+              <div class="product-price">
+                <span class="price-current">$${product.price || '49.99'}</span>
+                <span class="price-compare">$${product.originalPrice || (parseFloat(product.price || 49.99) * 2).toFixed(2)}</span>
+                <span class="price-save">Save 50%</span>
+              </div>
+
+              <div class="urgency-bar">
+                ⏰ ${prod.urgencyMessage || 'Only 23 left in stock - Order now!'}
+              </div>
+
+              <div class="social-proof">
+                <div class="avatar-stack">
+                  <div class="avatar"></div>
+                  <div class="avatar"></div>
+                  <div class="avatar"></div>
+                  <div class="avatar"></div>
+                </div>
+                <span>${prod.socialProof || '47,000+ happy customers'}</span>
+              </div>
+
+              <button class="add-to-cart-btn">Add to Cart - $${product.price || '49.99'}</button>
+              <button class="buy-now-btn">🛒 Buy Now with Shop Pay</button>
+            </div>
+          </section>
+
+          <!-- Features -->
+          <section class="features-section">
+            <h2 class="features-title">Why Choose ${content.brandName || 'Us'}</h2>
+            <div class="features-grid">
+              ${features.map(f => `
+                <div class="feature-card">
+                  <div class="feature-icon">${f.icon || '✨'}</div>
+                  <h3>${f.title}</h3>
+                  <p>${f.description}</p>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+
+          <!-- Testimonials -->
+          <section class="testimonials-section">
+            <h2 class="testimonials-title">What Our Customers Say</h2>
+            <div class="testimonials-grid">
+              ${testimonials.map(t => `
+                <div class="testimonial-card">
+                  <div class="testimonial-stars">★★★★★</div>
+                  <p class="testimonial-quote">"${t.quote}"</p>
+                  <div class="testimonial-author">
+                    <div class="author-avatar">${t.author?.charAt(0) || 'A'}</div>
+                    <div>
+                      <div class="author-name">${t.author}</div>
+                      <div class="author-title">${t.title || 'Verified Buyer'}</div>
+                      <div class="verified-badge">✓ Verified Purchase</div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function renderLiquidPreview(content) {
+      if (!content.theme) {
+        previewContent.innerHTML = `<div class="code-preview"><pre>No Liquid templates generated yet.</pre></div>`;
+        return;
+      }
+
+      const sections = content.theme.sections || {};
+      const sectionNames = Object.keys(sections);
+
+      let liquidCode = '';
+
+      // Show main-product.liquid as example
+      if (sections['main-product.liquid']) {
+        liquidCode = sections['main-product.liquid'];
+      } else if (sectionNames.length > 0) {
+        liquidCode = sections[sectionNames[0]];
+      } else {
+        liquidCode = 'No sections generated';
+      }
+
+      previewContent.innerHTML = `
+        <div style="padding: 1rem;">
+          <div style="margin-bottom: 1rem;">
+            <strong>Generated Shopify Liquid Sections (${sectionNames.length} files):</strong>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+              ${sectionNames.map(name => `<span style="background: #e5e5e5; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer;" onclick="showSection('${name}')">${name}</span>`).join('')}
+            </div>
+          </div>
+          <div id="liquidCodeContainer" class="code-preview"><pre>${escapeHtml(liquidCode)}</pre></div>
+        </div>
+      `;
+
+      // Store sections globally for switching
+      window.currentSections = sections;
+    }
+
+    // Global function to show different sections
+    window.showSection = function(name) {
+      if (window.currentSections && window.currentSections[name]) {
+        document.getElementById('liquidCodeContainer').innerHTML = `<pre>${escapeHtml(window.currentSections[name])}</pre>`;
+      }
+    };
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
